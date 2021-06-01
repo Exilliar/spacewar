@@ -69,17 +69,17 @@ class Player {
     console.log(
       "speed:",
       this.speed,
-      "xSpeed:",
+      "\nxSpeed:",
       this.xSpeed,
-      "ySpeed:",
+      "\nySpeed:",
       this.ySpeed,
-      "angle:",
+      "\nangle:",
       this.angle,
-      "radian:",
+      "\nradian:",
       this.angle * (Math.PI / 180),
-      "\nnew x:",
+      "\nx:",
       Math.round(this.x),
-      "new y:",
+      "y:",
       Math.round(this.y)
     );
   }

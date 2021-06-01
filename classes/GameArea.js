@@ -5,8 +5,11 @@ class GameArea {
   left = false;
   right = false;
   space = false;
+  shoot = false;
   a = false;
   d = false;
+
+  missiles = [];
 
   start() {
     this.canvas.width = window.innerWidth;
@@ -30,7 +33,52 @@ class GameArea {
   updateGameArea() {
     requestAnimationFrame(this.updateGameArea.bind(this));
     this.clear();
+    this.fire();
     this.player.update();
+
+    this.updateMissiles();
+  }
+
+  updateMissiles() {
+    if (this.missiles.length > 1) {
+      // > 1 as reduce doesn't return an array when given an array of legnth one, having one missle update won't affect performance
+      this.missiles = this.missiles.reduce((prev, missile) => {
+        // if this is the first loop, prev will not be an array. Below if statement converts it to an array if needed
+        let arr;
+        if (Array.isArray(prev)) {
+          arr = prev;
+        } else {
+          arr = [prev];
+        }
+        // update the missle
+        missile.update();
+        // if the missile has left the screen, remove it from the array, the garbage collector should remove it from memory
+        if (
+          missile.x <= this.canvas.width &&
+          missile.x >= 0 &&
+          missile.y <= this.canvas.height &&
+          missile.y >= 0
+        ) {
+          arr.push(missile);
+          return arr;
+        } else {
+          return arr;
+        }
+      });
+    }
+  }
+
+  fire() {
+    if (this.shoot) {
+      this.missiles.push(
+        new Missile(
+          this.player.x + this.player.width / 2,
+          this.player.y + this.player.height / 2,
+          this.player.angle,
+          this
+        )
+      );
+    }
   }
 
   addListeners() {
@@ -69,6 +117,9 @@ class GameArea {
         case "d":
           vm.b = true;
           break;
+        case "c":
+          vm.shoot = true;
+          break;
       }
     });
     window.addEventListener("keyup", function (e) {
@@ -93,6 +144,9 @@ class GameArea {
           break;
         case "d":
           vm.d = false;
+          break;
+        case "c":
+          vm.shoot = false;
       }
     });
   }
