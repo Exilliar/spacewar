@@ -66,22 +66,22 @@ class Player {
     }
     this.x += this.xSpeed;
     this.y += this.ySpeed;
-    console.log(
-      "speed:",
-      this.speed,
-      "\nxSpeed:",
-      this.xSpeed,
-      "\nySpeed:",
-      this.ySpeed,
-      "\nangle:",
-      this.angle,
-      "\nradian:",
-      this.angle * (Math.PI / 180),
-      "\nx:",
-      Math.round(this.x),
-      "y:",
-      Math.round(this.y)
-    );
+    // console.log(
+    //   "speed:",
+    //   this.speed,
+    //   "\nxSpeed:",
+    //   this.xSpeed,
+    //   "\nySpeed:",
+    //   this.ySpeed,
+    //   "\nangle:",
+    //   this.angle,
+    //   "\nradian:",
+    //   this.angle * (Math.PI / 180),
+    //   "\nx:",
+    //   Math.round(this.x),
+    //   "y:",
+    //   Math.round(this.y)
+    // );
   }
   rotate() {
     if (this.gameArea.left) {

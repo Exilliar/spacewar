@@ -6,6 +6,7 @@ class GameArea {
   right = false;
   space = false;
   shoot = false;
+  shot = false; // boolean to only allow one missile to be fired per button press
   a = false;
   d = false;
 
@@ -40,7 +41,7 @@ class GameArea {
   }
 
   updateMissiles() {
-    if (this.missiles.length > 1) {
+    if (this.missiles.length >= 1) {
       // > 1 as reduce doesn't return an array when given an array of legnth one, having one missle update won't affect performance
       this.missiles = this.missiles.reduce((prev, missile) => {
         // if this is the first loop, prev will not be an array. Below if statement converts it to an array if needed
@@ -48,6 +49,7 @@ class GameArea {
         if (Array.isArray(prev)) {
           arr = prev;
         } else {
+          prev.update();
           arr = [prev];
         }
         // update the missle
@@ -65,19 +67,37 @@ class GameArea {
           return arr;
         }
       });
+      // if there is only one missile, reduce does not return an array and will not run the function
+      // below if statement handles this and updates the single missile
+      if (!Array.isArray(this.missiles)) {
+        this.missiles.update();
+        if (
+          this.missiles.x <= this.canvas.width &&
+          this.missiles.x >= 0 &&
+          this.missiles.y <= this.canvas.height &&
+          this.missiles.y >= 0
+        ) {
+          this.missiles = [this.missiles];
+        } else {
+          this.missiles = [];
+        }
+      }
     }
   }
 
   fire() {
-    if (this.shoot) {
+    if (this.shoot && !this.shot) {
       this.missiles.push(
         new Missile(
           this.player.x + this.player.width / 2,
           this.player.y + this.player.height / 2,
           this.player.angle,
-          this
+          this,
+          this.player.xSpeed,
+          this.player.ySpeed
         )
       );
+      this.shot = true;
     }
   }
 
@@ -147,6 +167,8 @@ class GameArea {
           break;
         case "c":
           vm.shoot = false;
+          vm.shot = false;
+          break;
       }
     });
   }

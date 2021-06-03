@@ -8,9 +8,11 @@ class Missile {
   width = 5;
   height = 10;
 
-  constructor(x, y, angle, gameArea) {
+  constructor(x, y, angle, gameArea, xSpd, ySpd) {
     this.x = x;
     this.y = y;
+    this.xSpeed = xSpd;
+    this.ySpeed = ySpd;
     this.angle = angle;
     this.gameArea = gameArea;
     this.ctx = gameArea.context;
