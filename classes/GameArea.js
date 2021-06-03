@@ -22,7 +22,8 @@ class GameArea {
     // framerate/update cycle
     requestAnimationFrame(this.updateGameArea.bind(this));
 
-    this.player = new Player(400, 300, this);
+    this.sun = new Sun(this);
+    this.player = new Player(400, 300, this, this.sun);
 
     this.addListeners();
   }
@@ -36,6 +37,7 @@ class GameArea {
     this.clear();
     this.fire();
     this.player.update();
+    this.sun.draw();
 
     this.updateMissiles();
   }

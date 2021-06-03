@@ -7,12 +7,15 @@ class Player {
   turnChange = 5;
   width = 10;
   height = 20;
+  gravity = 0;
+  gravityAngle = 0;
 
-  constructor(x, y, gameArea) {
+  constructor(x, y, gameArea, sun) {
     this.x = x;
     this.y = y;
     this.gameArea = gameArea;
     this.ctx = gameArea.context;
+    this.sun = sun;
 
     this.draw();
   }
@@ -45,8 +48,55 @@ class Player {
   update() {
     this.rotate();
     this.move();
+    this.applyGrav();
+
+    this.x += this.xSpeed;
+    this.y += this.ySpeed;
 
     this.draw();
+  }
+
+  applyGrav() {
+    const x1 = this.x;
+    const y1 = this.y;
+    const x2 = this.sun.x;
+    const y2 = this.sun.y;
+
+    const rSqr = Math.pow(x1 - x2, 2) + Math.pow(y1 - y2, 2); // distance squared
+    this.gravity = (this.sun.mass * this.sun.G) / rSqr;
+
+    const hyp = Math.sqrt(rSqr);
+    let opp = Math.abs(y1 - y2);
+
+    let zone;
+    if (x2 > x1 && y2 < y1) {
+      zone = 0;
+    } else if (x2 > x1 && y2 > y1) {
+      zone = 1;
+    } else if (x2 < x1 && y2 > y1) {
+      zone = 2;
+    } else if (x2 < x1 && y2 < y1) {
+      zone = 3;
+    }
+    const a = Math.asin(opp / hyp);
+    let angle;
+    switch (zone) {
+      case 0:
+        angle = this.toRadians(90) - a;
+        break;
+      case 1:
+        angle = this.toRadians(90) + a;
+        break;
+      case 2:
+        angle = this.toRadians(270) - a;
+        break;
+      case 3:
+        angle = this.toRadians(270) + a;
+        break;
+    }
+
+    this.xSpeed += this.gravity * Math.sin(angle);
+    this.ySpeed -= this.gravity * Math.cos(angle);
   }
 
   move() {
@@ -64,8 +114,6 @@ class Player {
       this.xSpeed = 0;
       this.ySpeed = 0;
     }
-    this.x += this.xSpeed;
-    this.y += this.ySpeed;
     // console.log(
     //   "speed:",
     //   this.speed,
@@ -100,5 +148,8 @@ class Player {
 
   toRadians(angle) {
     return (angle * Math.PI) / 180;
+  }
+  toDegrees(radian) {
+    return radian * (180 / Math.PI);
   }
 }
