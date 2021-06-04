@@ -36,7 +36,7 @@ class Player {
 
     this.ctx.fillStyle = "blue";
     this.ctx.fillRect(
-      widthTranslate - this.width / 2 - 0.5,
+      widthTranslate - this.width / 2,
       heightTranslate - this.height / 2,
       this.width,
       this.height / 3

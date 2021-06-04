@@ -5,7 +5,7 @@ class Sun {
   y = (window.innerHeight - this.height / 2) / 2;
 
   G = 9.8; // gravitational constant
-  mass = 10;
+  mass = 500;
 
   constructor(gameArea) {
     this.gameArea = gameArea;
