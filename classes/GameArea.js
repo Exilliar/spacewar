@@ -1,14 +1,46 @@
 class GameArea {
   canvas = document.createElement("canvas");
-  up = false;
-  down = false;
-  left = false;
-  right = false;
-  space = false;
-  shoot = false;
-  shot = false; // boolean to only allow one missile to be fired per button press
-  a = false;
-  d = false;
+  controlsHold = {
+    up: {
+      key: "ArrowUp",
+      pressed: false,
+    },
+    down: {
+      key: "ArrowDown",
+      pressed: false,
+    },
+    left: {
+      key: "ArrowLeft",
+      pressed: false,
+    },
+    right: {
+      key: "ArrowRight",
+      pressed: false,
+    },
+    space: {
+      key: " ",
+      pressed: false,
+    },
+    r: {
+      key: "r",
+      pressed: false,
+    },
+    a: {
+      key: "a",
+      pressed: false,
+    },
+    d: {
+      key: "d",
+      pressed: false,
+    },
+  };
+  controlsPressed = {
+    shoot: {
+      key: "c",
+      pressed: false,
+      action: false,
+    },
+  };
 
   missiles = [];
 
@@ -29,7 +61,9 @@ class GameArea {
   }
 
   clear() {
-    this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
+    if (!this.controlsHold.r.pressed) {
+      this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
+    }
   }
 
   updateGameArea() {
@@ -88,7 +122,10 @@ class GameArea {
   }
 
   fire() {
-    if (this.shoot && !this.shot) {
+    if (
+      this.controlsPressed.shoot.pressed &&
+      !this.controlsPressed.shoot.action
+    ) {
       this.missiles.push(
         new Missile(
           this.player.x + this.player.width / 2,
@@ -99,7 +136,7 @@ class GameArea {
           this.player.ySpeed
         )
       );
-      this.shot = true;
+      this.controlsPressed.shoot.action = true;
     }
   }
 
@@ -117,61 +154,29 @@ class GameArea {
       if (defaultKeys.indexOf(e.key) > -1) {
         e.preventDefault();
       }
-      switch (e.key) {
-        case "ArrowUp":
-          vm.up = true;
-          break;
-        case "ArrowDown":
-          vm.down = true;
-          break;
-        case "ArrowRight":
-          vm.right = true;
-          break;
-        case "ArrowLeft":
-          vm.left = true;
-          break;
-        case " ":
-          vm.space = true;
-          break;
-        case "a":
-          vm.a = true;
-          break;
-        case "d":
-          vm.b = true;
-          break;
-        case "c":
-          vm.shoot = true;
-          break;
-      }
+      Object.keys(vm.controlsHold).forEach((k) => {
+        if (vm.controlsHold[k].key === e.key) {
+          vm.controlsHold[k].pressed = true;
+        }
+      });
+      Object.keys(vm.controlsPressed).forEach((k) => {
+        if (vm.controlsPressed[k].key === e.key) {
+          vm.controlsPressed[k].pressed = true;
+        }
+      });
     });
     window.addEventListener("keyup", function (e) {
-      switch (e.key) {
-        case "ArrowUp":
-          vm.up = false;
-          break;
-        case "ArrowDown":
-          vm.down = false;
-          break;
-        case "ArrowRight":
-          vm.right = false;
-          break;
-        case "ArrowLeft":
-          vm.left = false;
-          break;
-        case " ":
-          vm.space = false;
-          break;
-        case "a":
-          vm.a = false;
-          break;
-        case "d":
-          vm.d = false;
-          break;
-        case "c":
-          vm.shoot = false;
-          vm.shot = false;
-          break;
-      }
+      Object.keys(vm.controlsHold).forEach((k) => {
+        if (vm.controlsHold[k].key === e.key) {
+          vm.controlsHold[k].pressed = false;
+        }
+      });
+      Object.keys(vm.controlsPressed).forEach((k) => {
+        if (vm.controlsPressed[k].key === e.key) {
+          vm.controlsPressed[k].pressed = false;
+          vm.controlsPressed[k].action = false;
+        }
+      });
     });
   }
 }

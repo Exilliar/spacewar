@@ -100,16 +100,18 @@ class Player {
   }
 
   move() {
-    if (this.gameArea.up || this.gameArea.down) {
-      if (this.gameArea.up) {
+    const up = this.gameArea.controlsHold.up.pressed;
+    const down = this.gameArea.controlsHold.down.pressed;
+    if (up || down) {
+      if (up) {
         this.speed = this.acc;
-      } else if (this.gameArea.down) {
+      } else if (down) {
         this.speed = -this.acc;
       }
       this.xSpeed += this.speed * Math.sin(this.toRadians(this.angle));
       this.ySpeed -= this.speed * Math.cos(this.toRadians(this.angle));
     }
-    if (this.gameArea.space) {
+    if (this.gameArea.controlsHold.space.pressed) {
       this.speed = 0;
       this.xSpeed = 0;
       this.ySpeed = 0;
@@ -132,13 +134,13 @@ class Player {
     // );
   }
   rotate() {
-    if (this.gameArea.left) {
+    if (this.gameArea.controlsHold.left.pressed) {
       this.angle -= this.turnChange;
-    } else if (this.gameArea.right) {
+    } else if (this.gameArea.controlsHold.right.pressed) {
       this.angle += this.turnChange;
-    } else if (this.gameArea.a) {
+    } else if (this.gameArea.controlsHold.a.pressed) {
       this.angle = Math.ceil(this.angle - 90);
-    } else if (this.gameArea.d) {
+    } else if (this.gameArea.controlsHold.d.pressed) {
       this.angle = Math.ceil(this.angle + 90);
     }
 
