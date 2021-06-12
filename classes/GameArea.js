@@ -1,19 +1,19 @@
 class GameArea {
   canvas = document.createElement("canvas");
   controlsHold = {
-    up: {
+    ArrowUp: {
       key: "ArrowUp",
       pressed: false,
     },
-    down: {
+    ArrowDown: {
       key: "ArrowDown",
       pressed: false,
     },
-    left: {
+    ArrowLeft: {
       key: "ArrowLeft",
       pressed: false,
     },
-    right: {
+    ArrowRight: {
       key: "ArrowRight",
       pressed: false,
     },
@@ -23,6 +23,14 @@ class GameArea {
     },
     r: {
       key: "r",
+      pressed: false,
+    },
+    w: {
+      key: "w",
+      pressed: false,
+    },
+    s: {
+      key: "s",
       pressed: false,
     },
     a: {
@@ -35,11 +43,16 @@ class GameArea {
     },
   };
   controlsPressed = {
-    shoot: {
+    c: {
       key: "c",
       pressed: false,
       action: false,
     },
+    m: {
+      key: "m",
+      pressed: false,
+      action: false,
+    }
   };
 
   missiles = [];
@@ -55,7 +68,30 @@ class GameArea {
     requestAnimationFrame(this.updateGameArea.bind(this));
 
     this.sun = new Sun(this);
-    this.player = new Player(400, 300, this, this.sun);
+    this.player1 = new Player(100, window.innerHeight/2, this, this.sun, {
+      up: "ArrowUp",
+      down: "ArrowDown",
+      left: "ArrowLeft",
+      right: "ArrowRight",
+      stop: "space",
+      shoot: "m",
+    }, {
+      color1: "red",
+      color2: "blue",
+      missileColor: "blue"
+    });
+    this.player2 = new Player(window.innerWidth - 100, window.innerHeight/2, this, this.sun, {
+      up: "w",
+      down: "s",
+      left: "a",
+      right: "d",
+      stop: "space",
+      shoot: "c"
+    }, {
+      color1: "blue",
+      color2: "red",
+      missileColor: "red"
+    });
 
     this.addListeners();
   }
@@ -69,75 +105,12 @@ class GameArea {
   updateGameArea() {
     requestAnimationFrame(this.updateGameArea.bind(this));
     this.clear();
-    this.fire();
-    this.player.update();
+    this.player1.update();
+    this.player2.update();
     this.sun.draw();
 
-    this.updateMissiles();
-  }
-
-  updateMissiles() {
-    if (this.missiles.length >= 1) {
-      // > 1 as reduce doesn't return an array when given an array of legnth one, having one missle update won't affect performance
-      this.missiles = this.missiles.reduce((prev, missile) => {
-        // if this is the first loop, prev will not be an array. Below if statement converts it to an array if needed
-        let arr;
-        if (Array.isArray(prev)) {
-          arr = prev;
-        } else {
-          prev.update();
-          arr = [prev];
-        }
-        // update the missle
-        missile.update();
-        // if the missile has left the screen, remove it from the array, the garbage collector should remove it from memory
-        if (
-          missile.x <= this.canvas.width &&
-          missile.x >= 0 &&
-          missile.y <= this.canvas.height &&
-          missile.y >= 0
-        ) {
-          arr.push(missile);
-          return arr;
-        } else {
-          return arr;
-        }
-      });
-      // if there is only one missile, reduce does not return an array and will not run the function
-      // below if statement handles this and updates the single missile
-      if (!Array.isArray(this.missiles)) {
-        this.missiles.update();
-        if (
-          this.missiles.x <= this.canvas.width &&
-          this.missiles.x >= 0 &&
-          this.missiles.y <= this.canvas.height &&
-          this.missiles.y >= 0
-        ) {
-          this.missiles = [this.missiles];
-        } else {
-          this.missiles = [];
-        }
-      }
-    }
-  }
-
-  fire() {
-    if (
-      this.controlsPressed.shoot.pressed &&
-      !this.controlsPressed.shoot.action
-    ) {
-      this.missiles.push(
-        new Missile(
-          this.player.x + this.player.width / 2,
-          this.player.y + this.player.height / 2,
-          this.player.angle,
-          this,
-          this.player.xSpeed,
-          this.player.ySpeed
-        )
-      );
-      this.controlsPressed.shoot.action = true;
-    }
+    this.player1.updateMissiles(this.player2);
+    this.player2.updateMissiles(this.player1);
   }
 
   addListeners() {

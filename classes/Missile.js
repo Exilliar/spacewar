@@ -8,7 +8,7 @@ class Missile {
   width = 5;
   height = 10;
 
-  constructor(x, y, angle, gameArea, xSpd, ySpd) {
+  constructor(x, y, angle, gameArea, xSpd, ySpd, color) {
     this.x = x;
     this.y = y;
     this.xSpeed = xSpd;
@@ -16,12 +16,13 @@ class Missile {
     this.angle = angle;
     this.gameArea = gameArea;
     this.ctx = gameArea.context;
+    this.color = color;
   }
 
   draw() {
     this.ctx.save();
 
-    this.ctx.fillStyle = "blue";
+    this.ctx.fillStyle = this.color;
 
     const widthTranslate = this.x + this.width / 2;
     const heightTranslate = this.y + this.height / 2;
