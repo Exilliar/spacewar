@@ -1,14 +1,14 @@
 class Sun {
   width = 20;
   height = 20;
-  x = (window.innerWidth - this.width / 2) / 2;
-  y = (window.innerHeight - this.height / 2) / 2;
 
   G = 9.8; // gravitational constant
   mass = 500;
 
   constructor(gameArea) {
     this.gameArea = gameArea;
+    this.x = (gameArea.canvas.width - this.width / 2) / 2;
+    this.y = (gameArea.canvas.height - this.height / 2) / 2;
     this.draw();
   }
 

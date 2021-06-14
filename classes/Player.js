@@ -7,6 +7,7 @@ class Player {
   turnChange = 5;
   width = 10;
   height = 20;
+  gravityOn = true;
   gravity = 0;
   gravityAngle = 0;
   missiles = [];
@@ -51,7 +52,7 @@ class Player {
   update() {
     this.rotate();
     this.move();
-    this.applyGrav();
+    if (this.gravityOn) this.applyGrav();
 
     this.fire();
 
@@ -59,6 +60,56 @@ class Player {
     this.y += this.ySpeed;
 
     this.draw();
+    const adjustedX = this.x + this.width / 2;
+    const adjustedY = this.y + this.height / 2;
+    this.getPointRotated(adjustedX, adjustedY, this.angle, -this.width/2, this.height/2); // bottom left
+    this.getPointRotated(adjustedX, adjustedY, this.angle, this.width/2, this.height/2); // bottom right
+    this.getPointRotated(adjustedX, adjustedY, this.angle, -this.width/2, -this.height/2); // top left
+    this.getPointRotated(adjustedX, adjustedY, this.angle, this.width/2, -this.height/2); // top right
+
+    // center
+    var circle = new Path2D();
+    circle.arc(adjustedX, adjustedY, 2, 0, 2 * Math.PI);
+    this.ctx.fill(circle);
+  }
+
+  get cornerBR() {// corner bottom right
+    return this.getPointRotated(adjustedX, adjustedY, this.angle, this.width/2, this.height/2);
+  }
+  get cornerBL() {// corner bottom left
+    return this.getPointRotated(adjustedX, adjustedY, this.angle, -this.width/2, this.height/2);
+  }
+  get cornerTL() {// corner top left
+    return this.getPointRotated(adjustedX, adjustedY, this.angle, -this.width/2, -this.height/2);
+  }
+  get cornerTR() {// corner top right
+    return this.getPointRotated(adjustedX, adjustedY, this.angle, this.width/2, -this.height/2);
+  }
+
+  getPointRotated(X, Y, R, Xos, Yos){
+    // Cx, Cy // the coordinates of your center point in world coordinates
+    // W      // the width of your rectangle
+    // H      // the height of your rectangle
+    // θ      // the angle you wish to rotate
+
+    //The offset of a corner in local coordinates (i.e. relative to the pivot point)
+    //(which corner will depend on the coordinate reference system used in your environment)
+
+    //The rotated position of this corner in world coordinates
+    var rotatedX = X + (Xos  * Math.cos(this.toRadians(R))) - (Yos * Math.sin(this.toRadians(R)))
+    var rotatedY = Y + (Xos  * Math.sin(this.toRadians(R))) + (Yos * Math.cos(this.toRadians(R)))
+
+    this.ctx.fillStyle = "yellow";
+    this.ctx.fill
+
+    var circle = new Path2D();
+    circle.arc(rotatedX, rotatedY, 2, 0, 2 * Math.PI);
+    this.ctx.fill(circle);
+
+    return {
+      x: rotatedX,
+      y: rotatedY
+    }
   }
 
   applyGrav() {
@@ -140,7 +191,7 @@ class Player {
     return radian * (180 / Math.PI);
   }
 
-  updateMissiles(otherPlayer) { // otherPlayer = either player 1 or 2 (the player that is not this one) which the missile can collide with
+  updateMissiles(otherPlayers) { // otherPlayer = either the players that are not this player which the missile can collide with
     if (this.missiles.length >= 1) {
       // > 1 as reduce doesn't return an array when given an array of legnth one, having one missle update won't affect performance
       this.missiles = this.missiles.reduce((prev, missile) => {

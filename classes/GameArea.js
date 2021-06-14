@@ -1,74 +1,28 @@
 class GameArea {
   canvas = document.createElement("canvas");
-  controlsHold = {
-    ArrowUp: {
-      key: "ArrowUp",
-      pressed: false,
-    },
-    ArrowDown: {
-      key: "ArrowDown",
-      pressed: false,
-    },
-    ArrowLeft: {
-      key: "ArrowLeft",
-      pressed: false,
-    },
-    ArrowRight: {
-      key: "ArrowRight",
-      pressed: false,
-    },
-    space: {
-      key: " ",
-      pressed: false,
-    },
-    r: {
-      key: "r",
-      pressed: false,
-    },
-    w: {
-      key: "w",
-      pressed: false,
-    },
-    s: {
-      key: "s",
-      pressed: false,
-    },
-    a: {
-      key: "a",
-      pressed: false,
-    },
-    d: {
-      key: "d",
-      pressed: false,
-    },
-  };
-  controlsPressed = {
-    c: {
-      key: "c",
-      pressed: false,
-      action: false,
-    },
-    m: {
-      key: "m",
-      pressed: false,
-      action: false,
-    }
-  };
+  controlsHold = controls.controlsHold;
+  controlsPressed = controls.controlsPressed;
+  gravityOn = true;
+  players = [];
 
   missiles = [];
 
   start() {
-    this.canvas.width = window.innerWidth;
-    this.canvas.height = window.innerHeight;
-    this.canvas.style = "background-color: black";
+    const halfWidth = window.innerWidth * 0.5;
+    const halfHeight = window.innerHeight * 0.5;
+    this.canvas.width = halfWidth >= 960 ? halfWidth : 960;
+    this.canvas.height = halfHeight >= 540 ? halfHeight : 540;
+    this.canvas.style = "background-color: black; border: 1px solid white;";
     this.context = this.canvas.getContext("2d");
-    document.body.insertBefore(this.canvas, document.body.childNodes[0]);
+
+    const gameDiv = document.getElementById("game");
+    gameDiv.appendChild(this.canvas);
 
     // framerate/update cycle
     requestAnimationFrame(this.updateGameArea.bind(this));
 
     this.sun = new Sun(this);
-    this.player1 = new Player(100, window.innerHeight/2, this, this.sun, {
+    this.player1 = new Player(100, this.canvas.height/2, this, this.sun, {
       up: "ArrowUp",
       down: "ArrowDown",
       left: "ArrowLeft",
@@ -80,7 +34,7 @@ class GameArea {
       color2: "blue",
       missileColor: "blue"
     });
-    this.player2 = new Player(window.innerWidth - 100, window.innerHeight/2, this, this.sun, {
+    this.player2 = new Player(this.canvas.width - 100, this.canvas.height/2, this, this.sun, {
       up: "w",
       down: "s",
       left: "a",
@@ -92,6 +46,9 @@ class GameArea {
       color2: "red",
       missileColor: "red"
     });
+
+    this.players.push(this.player1);
+    this.players.push(this.player2);
 
     this.addListeners();
   }
@@ -109,8 +66,8 @@ class GameArea {
     this.player2.update();
     this.sun.draw();
 
-    this.player1.updateMissiles(this.player2);
-    this.player2.updateMissiles(this.player1);
+    this.player1.updateMissiles([this.player2]);
+    this.player2.updateMissiles([this.player1]);
   }
 
   addListeners() {
@@ -151,5 +108,14 @@ class GameArea {
         }
       });
     });
+  }
+
+  toggleGrav() {
+    this.gravityOn = !this.gravityOn;
+    this.players.forEach(player => {
+      player.gravityOn = this.gravityOn;
+    });
+    const gravButton = document.getElementById("gravButton");
+    gravButton.textContent = `Turn gravity ${this.gravityOn ? "off" : "on"}`;
   }
 }

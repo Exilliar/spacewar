@@ -1,3 +1,10 @@
+const gameArea = new GameArea();
+
 function startGame() {
-  new GameArea().start();
+  gameArea.start();
+}
+
+function toggleGrav() {
+  console.log("toggle grav");
+  gameArea.toggleGrav();
 }
