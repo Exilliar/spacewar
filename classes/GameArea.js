@@ -118,4 +118,10 @@ class GameArea {
     const gravButton = document.getElementById("gravButton");
     gravButton.textContent = `Turn gravity ${this.gravityOn ? "off" : "on"}`;
   }
+
+  hit(player, bullet) {
+    console.log("hit", player);
+    player.hit = true;
+    bullet.hit = true;
+  }
 }

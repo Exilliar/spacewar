@@ -12,6 +12,8 @@ class Player {
   gravityAngle = 0;
   missiles = [];
 
+  hit = false;
+
   constructor(x, y, gameArea, sun, controls, drawOptions) {
     this.x = x;
     this.y = y;
@@ -25,34 +27,36 @@ class Player {
   }
 
   draw() {
-    this.ctx.save();
+    if (!this.hit){
+      this.ctx.save();
 
-    this.ctx.fillStyle = this.drawOptions.color1;
+      this.ctx.fillStyle = this.drawOptions.color1;
 
-    const widthTranslate = this.x + this.width / 2;
-    const heightTranslate = this.y + this.height / 2;
+      const widthTranslate = this.x + this.width / 2;
+      const heightTranslate = this.y + this.height / 2;
 
-    this.ctx.translate(widthTranslate, heightTranslate);
-    this.ctx.rotate(this.toRadians(this.angle));
-    this.ctx.translate(-widthTranslate, -heightTranslate);
+      this.ctx.translate(widthTranslate, heightTranslate);
+      this.ctx.rotate(this.toRadians(this.angle));
+      this.ctx.translate(-widthTranslate, -heightTranslate);
 
-    this.ctx.fillRect(this.x, this.y, this.width, this.height);
+      this.ctx.fillRect(this.x, this.y, this.width, this.height);
 
-    this.ctx.fillStyle = this.drawOptions.color2;
-    this.ctx.fillRect(
-      widthTranslate - this.width / 2,
-      heightTranslate - this.height / 2,
-      this.width,
-      this.height / 3
-    );
+      this.ctx.fillStyle = this.drawOptions.color2;
+      this.ctx.fillRect(
+        widthTranslate - this.width / 2,
+        heightTranslate - this.height / 2,
+        this.width,
+        this.height / 3
+      );
 
-    this.ctx.restore();
+      this.ctx.restore();
+    }
   }
 
   update() {
     this.rotate();
     this.move();
-    if (this.gravityOn) this.applyGrav();
+    // if (this.gravityOn) this.applyGrav();
 
     this.fire();
 
@@ -60,29 +64,26 @@ class Player {
     this.y += this.ySpeed;
 
     this.draw();
-    const adjustedX = this.x + this.width / 2;
-    const adjustedY = this.y + this.height / 2;
-    this.getPointRotated(adjustedX, adjustedY, this.angle, -this.width/2, this.height/2); // bottom left
-    this.getPointRotated(adjustedX, adjustedY, this.angle, this.width/2, this.height/2); // bottom right
-    this.getPointRotated(adjustedX, adjustedY, this.angle, -this.width/2, -this.height/2); // top left
-    this.getPointRotated(adjustedX, adjustedY, this.angle, this.width/2, -this.height/2); // top right
-
-    // center
-    var circle = new Path2D();
-    circle.arc(adjustedX, adjustedY, 2, 0, 2 * Math.PI);
-    this.ctx.fill(circle);
   }
 
   get cornerBR() {// corner bottom right
+    const adjustedX = this.x + this.width / 2;
+    const adjustedY = this.y + this.height / 2;
     return this.getPointRotated(adjustedX, adjustedY, this.angle, this.width/2, this.height/2);
   }
   get cornerBL() {// corner bottom left
+    const adjustedX = this.x + this.width / 2;
+    const adjustedY = this.y + this.height / 2;
     return this.getPointRotated(adjustedX, adjustedY, this.angle, -this.width/2, this.height/2);
   }
   get cornerTL() {// corner top left
+    const adjustedX = this.x + this.width / 2;
+    const adjustedY = this.y + this.height / 2;
     return this.getPointRotated(adjustedX, adjustedY, this.angle, -this.width/2, -this.height/2);
   }
   get cornerTR() {// corner top right
+    const adjustedX = this.x + this.width / 2;
+    const adjustedY = this.y + this.height / 2;
     return this.getPointRotated(adjustedX, adjustedY, this.angle, this.width/2, -this.height/2);
   }
 
@@ -96,15 +97,8 @@ class Player {
     //(which corner will depend on the coordinate reference system used in your environment)
 
     //The rotated position of this corner in world coordinates
-    var rotatedX = X + (Xos  * Math.cos(this.toRadians(R))) - (Yos * Math.sin(this.toRadians(R)))
-    var rotatedY = Y + (Xos  * Math.sin(this.toRadians(R))) + (Yos * Math.cos(this.toRadians(R)))
-
-    this.ctx.fillStyle = "yellow";
-    this.ctx.fill
-
-    var circle = new Path2D();
-    circle.arc(rotatedX, rotatedY, 2, 0, 2 * Math.PI);
-    this.ctx.fill(circle);
+    var rotatedX = X + (Xos  * Math.cos(this.toRadians(R))) - (Yos * Math.sin(this.toRadians(R)));
+    var rotatedY = Y + (Xos  * Math.sin(this.toRadians(R))) + (Yos * Math.cos(this.toRadians(R)));
 
     return {
       x: rotatedX,
@@ -192,6 +186,7 @@ class Player {
   }
 
   updateMissiles(otherPlayers) { // otherPlayer = either the players that are not this player which the missile can collide with
+    // console.log("otherplayers:", otherPlayers)
     if (this.missiles.length >= 1) {
       // > 1 as reduce doesn't return an array when given an array of legnth one, having one missle update won't affect performance
       this.missiles = this.missiles.reduce((prev, missile) => {
@@ -200,11 +195,12 @@ class Player {
         if (Array.isArray(prev)) {
           arr = prev;
         } else {
-          prev.update();
+          // console.log("inside reduce players:", otherPlayers)
+          prev.update(otherPlayers);
           arr = [prev];
         }
         // update the missle
-        missile.update();
+        missile.update(otherPlayers);
         // if the missile has left the screen, remove it from the array, the garbage collector should remove it from memory
         if (
           missile.x <= this.gameArea.canvas.width &&
@@ -221,7 +217,7 @@ class Player {
       // if there is only one missile, reduce does not return an array and will not run the function
       // below if statement handles this and updates the single missile
       if (!Array.isArray(this.missiles)) {
-        this.missiles.update();
+        this.missiles.update(otherPlayers);
         if (
           this.missiles.x <= this.gameArea.canvas.width &&
           this.missiles.x >= 0 &&
