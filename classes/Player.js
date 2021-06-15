@@ -56,7 +56,7 @@ class Player {
   update() {
     this.rotate();
     this.move();
-    // if (this.gravityOn) this.applyGrav();
+    if (this.gravityOn) this.applyGrav();
 
     this.fire();
 
