@@ -7,6 +7,8 @@ class GameArea {
 
   missiles = [];
 
+  intervalGap = 20;
+
   start() {
     const halfWidth = window.innerWidth * 0.5;
     const halfHeight = window.innerHeight * 0.5;
@@ -19,7 +21,7 @@ class GameArea {
     gameDiv.appendChild(this.canvas);
 
     // framerate/update cycle
-    requestAnimationFrame(this.updateGameArea.bind(this));
+    this.interval = setInterval(this.updateGameArea.bind(this), this.intervalGap);
 
     this.sun = new Sun(this);
     this.player1 = new Player(100, this.canvas.height/2, this, this.sun, {
@@ -60,7 +62,6 @@ class GameArea {
   }
 
   updateGameArea() {
-    requestAnimationFrame(this.updateGameArea.bind(this));
     this.clear();
     this.player1.update();
     this.player2.update();
