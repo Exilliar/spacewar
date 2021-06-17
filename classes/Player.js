@@ -14,7 +14,7 @@ class Player {
 
   hit = false;
 
-  constructor(x, y, gameArea, sun, controls, drawOptions) {
+  constructor(x, y, gameArea, sun, controls, drawOptions, speed) {
     this.x = x;
     this.y = y;
     this.gameArea = gameArea;
@@ -22,6 +22,8 @@ class Player {
     this.sun = sun;
     this.controls = controls;
     this.drawOptions = drawOptions;
+    this.xSpeed = speed.xSpeed;
+    this.ySpeed = speed.ySpeed;
 
     this.draw();
   }
