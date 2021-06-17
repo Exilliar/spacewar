@@ -24,7 +24,7 @@ class GameArea {
     this.interval = setInterval(this.updateGameArea.bind(this), this.intervalGap);
 
     this.sun = new Sun(this);
-    this.player1 = new Player(100, this.canvas.height/2, this, this.sun, {
+    this.player1 = new Player(this.sun.x + 200, this.canvas.height/2, this, this.sun, {
       up: "ArrowUp",
       down: "ArrowDown",
       left: "ArrowLeft",
@@ -35,8 +35,11 @@ class GameArea {
       color1: "red",
       color2: "blue",
       missileColor: "blue"
+    }, {
+      xSpeed: 0,
+      ySpeed: -5,
     });
-    this.player2 = new Player(this.canvas.width - 100, this.canvas.height/2, this, this.sun, {
+    this.player2 = new Player(this.sun.x - 200, this.canvas.height/2, this, this.sun, {
       up: "w",
       down: "s",
       left: "a",
@@ -47,6 +50,9 @@ class GameArea {
       color1: "blue",
       color2: "red",
       missileColor: "red"
+    }, {
+      xSpeed: 0,
+      ySpeed: 5,
     });
 
     this.players.push(this.player1);
