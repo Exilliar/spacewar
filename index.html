@@ -1,7 +1,7 @@
 <html>
   <head>
     <title>Spacewar</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="style.css" />
     <script type="text/javascript" src="data/controls.js"></script>
     <script type="text/javascript" src="classes/Player.js"></script>
     <script type="text/javascript" src="classes/Missile.js"></script>
@@ -37,12 +37,16 @@
     <h2>Settings</h2>
     <h3>Gravity</h3>
     <button id="gravButton" onclick="toggleGrav()">Turn gravity off</button>
-    <form id="gravSettings" class="center" onsubmit="updateGrav(); return false">
-      <div class="grid">
+    <form
+      id="gravSettings"
+      class="center"
+      onsubmit="updateGrav(); return false"
+    >
+      <div class="grid form-grid">
         <label for="gravity">Gravity value:</label>
-        <input type="number" name="gravity">
+        <input type="number" name="gravity" id="gravity" />
         <label for="mass">Sun mass:</label>
-        <input type="number" name="mass">
+        <input type="number" name="mass" id="mass" />
       </div>
       <button type="submit">Submit</button>
     </form>
