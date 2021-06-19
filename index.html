@@ -11,26 +11,46 @@
     <script type="text/javascript" src="index.js"></script>
   </head>
   <body onload="startGame()">
-    <h1>SpaceWar v1.0</h1>
-    <div class="row">
-      <div class="column">
-        <h2>Player 1</h2>
-        <div class="grid">
-          <p>Movement:</p>
-          <p>wasd</p>
-          <p>Shoot:</p>
-          <p>c</p>
+    <div role="main" class="main">
+      <h1>SpaceWar v1.0</h1>
+      <div class="row">
+        <div class="column">
+          <h2>Player 1</h2>
+          <div class="grid">
+            <p>Movement:</p>
+            <p>wasd</p>
+            <p>Shoot:</p>
+            <p>c</p>
+          </div>
+        </div>
+        <div class="column">
+          <h2>Player 2</h2>
+          <div class="grid">
+            <p>Movement:</p>
+            <p>arrow keys</p>
+            <p>Shoot:</p>
+            <p>m</p>
+          </div>
         </div>
       </div>
-      <div class="column">
-        <h2>Player 2</h2>
-        <div class="grid">
-          <p>Movement:</p>
-          <p>arrow keys</p>
-          <p>Shoot:</p>
-          <p>m</p>
+      <div id="restart-button-container"></div>
+      <div id="game"></div>
+      <h2>Settings</h2>
+      <h3>Gravity</h3>
+      <button id="gravButton" onclick="toggleGrav()">Turn gravity off</button>
+      <form
+        id="gravSettings"
+        class="center"
+        onsubmit="updateGrav(); return false"
+      >
+        <div class="grid form-grid">
+          <label for="gravity">Gravity value:</label>
+          <input type="number" name="gravity" id="gravity" />
+          <label for="mass">Sun mass:</label>
+          <input type="number" name="mass" id="mass" />
         </div>
-      </div>
+        <button type="submit">Submit</button>
+      </form>
     </div>
     <div id="restart-button-container"></div>
     <div id="game"></div>
