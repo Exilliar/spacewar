@@ -1,4 +1,4 @@
-<html>
+<html lang="en">
   <head>
     <title>Spacewar</title>
     <link rel="stylesheet" href="style.css" />
@@ -40,7 +40,6 @@
     <form
       id="gravSettings"
       class="center"
-      onsubmit="updateGrav(); return false"
     >
       <div class="grid form-grid">
         <label for="gravity">Gravity value:</label>
@@ -48,7 +47,7 @@
         <label for="mass">Sun mass:</label>
         <input type="number" name="mass" id="mass" />
       </div>
-      <button type="submit">Submit</button>
+      <button type="submit" onclick="updateGrav()">Submit</button>
     </form>
   </body>
 </html>

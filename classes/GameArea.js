@@ -161,4 +161,9 @@ class GameArea {
 
     this.gameOver = true;
   }
+
+  updateGrav(G, mass) {
+    this.sun.G = G ? G : this.sun.G;
+    this.sun.mass = mass ? mass : this.sun.mass;
+  }
 }
