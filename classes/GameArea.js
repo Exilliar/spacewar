@@ -3,11 +3,13 @@ class GameArea {
   controlsHold = controls.controlsHold;
   controlsPressed = controls.controlsPressed;
   gravityOn = true;
-  players = [];
+  players = []; // { score: number, player: obj }[]
 
   missiles = [];
 
   intervalGap = 20;
+
+  gameOver = false;
 
   start() {
     const halfWidth = window.innerWidth * 0.5;
@@ -20,10 +22,27 @@ class GameArea {
     const gameDiv = document.getElementById("game");
     gameDiv.appendChild(this.canvas);
 
+    this.sun = new Sun(this);
+
+    this.startGame();
+
+    this.addListeners();
+  }
+
+  startGame() {
+    let restartContainer = document.getElementById("restart-button-container");
+    restartContainer.innerHTML = "";
+
+    this.gameOver = false;
+    this.players = [];
+
+    if (this.interval) {
+      clearInterval(this.interval);
+    }
+
     // framerate/update cycle
     this.interval = setInterval(this.updateGameArea.bind(this), this.intervalGap);
 
-    this.sun = new Sun(this);
     this.player1 = new Player(this.sun.x + 200, this.canvas.height/2, this, this.sun, {
       up: "ArrowUp",
       down: "ArrowDown",
@@ -57,8 +76,6 @@ class GameArea {
 
     this.players.push(this.player1);
     this.players.push(this.player2);
-
-    this.addListeners();
   }
 
   clear() {
@@ -127,8 +144,21 @@ class GameArea {
   }
 
   hit(player, bullet) {
-    console.log("hit", player);
     player.hit = true;
     bullet.hit = true;
+
+    if (!this.gameOver) {
+      let btn = document.createElement("button");
+      btn.innerText = "Restart";
+      btn.id = "restart-button";
+      btn.className = "restart-button";
+      btn.onclick = this.startGame.bind(this);
+      document.getElementById("restart-button-container").appendChild(btn);
+      setTimeout(() => {
+        clearInterval(this.interval);
+      }, 1000);
+    }
+
+    this.gameOver = true;
   }
 }
