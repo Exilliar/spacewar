@@ -14,5 +14,5 @@ function updateGrav(event) {
   const G = form.elements.gravity.value;
   const mass = form.elements.gravity.mass;
 
-  gameArea.updateGrav(G, mass);
+  // gameArea.updateGrav(G, mass);
 }
