@@ -3,7 +3,7 @@ class GameArea {
   controlsHold = controls.controlsHold;
   controlsPressed = controls.controlsPressed;
   gravityOn = true;
-  players = []; // { score: number, player: obj }[]
+  players = []; // { score: number, player: obj }[] NOTE: not done yet, currently just player objects
 
   missiles = [];
 
@@ -24,9 +24,18 @@ class GameArea {
 
     this.sun = new Sun(this);
 
+    // this.setForms();
+
     this.startGame();
 
     this.addListeners();
+  }
+
+  setForms() {
+    const gravityForm = document.getElementById("gravSettings");
+
+    gravityForm.elements.gravity.value = this.sun.G;
+    gravityForm.elements.mass.value = this.sun.mass;
   }
 
   startGame() {
@@ -163,7 +172,7 @@ class GameArea {
   }
 
   updateGrav(G, mass) {
-    this.sun.G = G ? G : this.sun.G;
-    this.sun.mass = mass ? mass : this.sun.mass;
+    this.sun.G = G ? +G : this.sun.G;
+    this.sun.mass = mass ? +mass : this.sun.mass;
   }
 }
