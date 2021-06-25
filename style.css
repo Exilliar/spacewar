@@ -5,7 +5,7 @@ body {
   font-family: Verdana, sans-serif;
 }
 .main {
-    display: flex;
+  display: flex;
   flex-direction: column;
   align-items: center;
 }
@@ -17,6 +17,9 @@ body {
   flex-direction: column;
   margin-left: 0.5rem;
   margin-right: 0.5rem;
+}
+.score-column {
+  text-align: center;
 }
 .grid {
   display: grid;
@@ -40,12 +43,15 @@ p {
   flex-direction: column;
   align-items: center;
 }
-#restart-button-container {
+/* #restart-button-container {
   margin-top: 1rem;
+  margin-bottom: 1rem;
   height: 2.5rem;
   display: flex;
   align-items: center;
-}
+  justify-content: center;
+  width: 100%;
+} */
 .restart-button {
   color: white;
   background-color: black;
@@ -66,8 +72,6 @@ button {
   background-color: black;
   border: 2px white solid;
   border-radius: 15px;
-  margin-bottom: 0.5rem;
-  margin-top: 0.5rem;
   padding: 0.5rem 1rem 0.5rem 1rem;
 }
 
@@ -83,4 +87,12 @@ input {
   display: flex;
   align-items: center;
   flex-direction: column;
+}
+
+.score {
+  width: 100%;
+  margin-bottom: 1rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }

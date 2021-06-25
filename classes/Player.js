@@ -14,7 +14,8 @@ class Player {
 
   hit = false;
 
-  constructor(x, y, gameArea, sun, controls, drawOptions, speed) {
+  constructor(id, x, y, gameArea, sun, controls, drawOptions, speed) {
+    this.id = id;
     this.x = x;
     this.y = y;
     this.gameArea = gameArea;
@@ -24,6 +25,7 @@ class Player {
     this.drawOptions = drawOptions;
     this.xSpeed = speed.xSpeed;
     this.ySpeed = speed.ySpeed;
+    this.hit = false;
 
     this.draw();
   }
@@ -245,7 +247,8 @@ class Player {
           this.gameArea,
           this.xSpeed,
           this.ySpeed,
-          this.drawOptions.missileColor
+          this.drawOptions.missileColor,
+          this
         )
       );
       this.gameArea.controlsPressed[this.controls.shoot].action = true;
