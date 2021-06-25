@@ -3,7 +3,7 @@ class GameArea {
   controlsHold = controls.controlsHold;
   controlsPressed = controls.controlsPressed;
   gravityOn = true;
-  players = []; // { score: number, player: obj }[]
+  players = []; // { score: number, player: obj }[] NOTE: not done yet, currently just player objects
 
   missiles = [];
 
@@ -160,5 +160,10 @@ class GameArea {
     }
 
     this.gameOver = true;
+  }
+
+  updateGrav(G, mass) {
+    this.sun.G = G ? +G : this.sun.G;
+    this.sun.mass = mass ? +mass : this.sun.mass;
   }
 }
