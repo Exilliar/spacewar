@@ -10,7 +10,7 @@ class Missile {
 
   hit = false;
 
-  constructor(x, y, angle, gameArea, xSpd, ySpd, color) {
+  constructor(x, y, angle, gameArea, xSpd, ySpd, color, player) {
     this.x = x - this.width / 2; // adjust x and y so that they come out at the center of the player
     this.y = y - this.height / 2;
     this.xSpeed = xSpd;
@@ -19,6 +19,7 @@ class Missile {
     this.gameArea = gameArea;
     this.ctx = gameArea.context;
     this.color = color;
+    this.player = player;
 
     this.adjustedX = this.x + this.width / 2;
     this.adjustedY = this.y + this.height / 2;
@@ -104,7 +105,7 @@ class Missile {
         intersects(player.top.x1, player.top.y1, player.top.x2, player.top.y2) ||
         intersects(player.bottom.x1, player.bottom.y1, player.bottom.x2, player.bottom.y2)
       ) {
-        this.gameArea.hit(players[i], this);
+        this.gameArea.hit(players[i], this, this.player);
       }
     };
   }

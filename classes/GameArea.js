@@ -3,7 +3,13 @@ class GameArea {
   controlsHold = controls.controlsHold;
   controlsPressed = controls.controlsPressed;
   gravityOn = true;
-  players = []; // { score: number, player: obj }[] NOTE: not done yet, currently just player objects
+  players = [{
+    score: 0,
+    player: null,
+  }, {
+    score: 0,
+    player: null,
+  }]; // { score: number, player: obj }[]
 
   missiles = [];
 
@@ -34,7 +40,6 @@ class GameArea {
     restartContainer.innerHTML = "";
 
     this.gameOver = false;
-    this.players = [];
 
     if (this.interval) {
       clearInterval(this.interval);
@@ -43,7 +48,7 @@ class GameArea {
     // framerate/update cycle
     this.interval = setInterval(this.updateGameArea.bind(this), this.intervalGap);
 
-    this.player1 = new Player(this.sun.x + 200, this.canvas.height/2, this, this.sun, {
+    this.player1 = new Player(0, this.sun.x + 200, this.canvas.height/2, this, this.sun, {
       up: "ArrowUp",
       down: "ArrowDown",
       left: "ArrowLeft",
@@ -58,7 +63,7 @@ class GameArea {
       xSpeed: 0,
       ySpeed: -5,
     });
-    this.player2 = new Player(this.sun.x - 200, this.canvas.height/2, this, this.sun, {
+    this.player2 = new Player(1, this.sun.x - 200, this.canvas.height/2, this, this.sun, {
       up: "w",
       down: "s",
       left: "a",
@@ -74,8 +79,8 @@ class GameArea {
       ySpeed: 5,
     });
 
-    this.players.push(this.player1);
-    this.players.push(this.player2);
+    this.players[0].player = this.player1;
+    this.players[1].player = this.player2;
   }
 
   clear() {
@@ -143,8 +148,14 @@ class GameArea {
     gravButton.textContent = `Turn gravity ${this.gravityOn ? "off" : "on"}`;
   }
 
-  hit(player, bullet) {
-    player.hit = true;
+  hit(playerhit, bullet, playerFired) {
+    if (!playerhit.hit) { // sometimes a hit can register twice, this check stops the score being recorded twice
+      this.players[playerFired.id].score ++;
+      const scoreElement = document.getElementById(`player${playerFired.id}-score`);
+      scoreElement.innerText = this.players[playerFired.id].score;
+    }
+
+    playerhit.hit = true;
     bullet.hit = true;
 
     if (!this.gameOver) {
