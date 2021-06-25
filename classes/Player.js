@@ -188,7 +188,6 @@ class Player {
   }
 
   updateMissiles(otherPlayers) { // otherPlayer = either the players that are not this player which the missile can collide with
-    // console.log("otherplayers:", otherPlayers)
     if (this.missiles.length >= 1) {
       // > 1 as reduce doesn't return an array when given an array of legnth one, having one missle update won't affect performance
       this.missiles = this.missiles.reduce((prev, missile) => {
@@ -197,7 +196,6 @@ class Player {
         if (Array.isArray(prev)) {
           arr = prev;
         } else {
-          // console.log("inside reduce players:", otherPlayers)
           prev.update(otherPlayers);
           arr = [prev];
         }

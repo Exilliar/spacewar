@@ -24,18 +24,9 @@ class GameArea {
 
     this.sun = new Sun(this);
 
-    // this.setForms();
-
     this.startGame();
 
     this.addListeners();
-  }
-
-  setForms() {
-    const gravityForm = document.getElementById("gravSettings");
-
-    gravityForm.elements.gravity.value = this.sun.G;
-    gravityForm.elements.mass.value = this.sun.mass;
   }
 
   startGame() {
