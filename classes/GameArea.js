@@ -144,7 +144,7 @@ class GameArea {
   toggleGrav() {
     this.gravityOn = !this.gravityOn;
     this.players.forEach(player => {
-      player.gravityOn = this.gravityOn;
+      player.player.gravityOn = this.gravityOn;
     });
     const gravButton = document.getElementById("gravButton");
     gravButton.textContent = `Turn gravity ${this.gravityOn ? "off" : "on"}`;
