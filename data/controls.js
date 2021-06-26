@@ -17,38 +17,38 @@ const controls = {
       pressed: false,
     },
     space: {
-      key: " ",
+      key: "Space",
       pressed: false,
     },
     r: {
-      key: "r",
+      key: "KeyR",
       pressed: false,
     },
     w: {
-      key: "w",
+      key: "KeyW",
       pressed: false,
     },
     s: {
-      key: "s",
+      key: "KeyS",
       pressed: false,
     },
     a: {
-      key: "a",
+      key: "KeyA",
       pressed: false,
     },
     d: {
-      key: "d",
+      key: "KeyD",
       pressed: false,
     },
   },
   controlsPressed: {
     c: {
-      key: "c",
+      key: "KeyC",
       pressed: false,
       action: false,
     },
     m: {
-      key: "m",
+      key: "KeyM",
       pressed: false,
       action: false,
     },
