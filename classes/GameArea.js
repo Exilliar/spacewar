@@ -103,26 +103,28 @@ class GameArea {
     let vm = this;
 
     window.addEventListener("keydown", function (e) {
-      const defaultKeys = [
-        "ArrowDown",
-        "ArrowUp",
-        "ArrowLeft",
-        "ArrowRight",
-        " ",
-      ];
-      if (defaultKeys.indexOf(e.key) > -1) {
-        e.preventDefault();
+      if (document.activeElement.tagName === "BODY") {
+        const defaultKeys = [
+          "ArrowDown",
+          "ArrowUp",
+          "ArrowLeft",
+          "ArrowRight",
+          " ",
+        ];
+        if (defaultKeys.indexOf(e.key) > -1) {
+          e.preventDefault();
+        }
+        Object.keys(vm.controlsHold).forEach((k) => {
+          if (vm.controlsHold[k].key === e.key) {
+            vm.controlsHold[k].pressed = true;
+          }
+        });
+        Object.keys(vm.controlsPressed).forEach((k) => {
+          if (vm.controlsPressed[k].key === e.key) {
+            vm.controlsPressed[k].pressed = true;
+          }
+        });
       }
-      Object.keys(vm.controlsHold).forEach((k) => {
-        if (vm.controlsHold[k].key === e.key) {
-          vm.controlsHold[k].pressed = true;
-        }
-      });
-      Object.keys(vm.controlsPressed).forEach((k) => {
-        if (vm.controlsPressed[k].key === e.key) {
-          vm.controlsPressed[k].pressed = true;
-        }
-      });
     });
     window.addEventListener("keyup", function (e) {
       Object.keys(vm.controlsHold).forEach((k) => {
