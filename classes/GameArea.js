@@ -109,18 +109,18 @@ class GameArea {
           "ArrowUp",
           "ArrowLeft",
           "ArrowRight",
-          " ",
+          "Space",
         ];
-        if (defaultKeys.indexOf(e.key) > -1) {
+        if (defaultKeys.indexOf(e.code) > -1) {
           e.preventDefault();
         }
         Object.keys(vm.controlsHold).forEach((k) => {
-          if (vm.controlsHold[k].key === e.key) {
+          if (vm.controlsHold[k].key === e.code) {
             vm.controlsHold[k].pressed = true;
           }
         });
         Object.keys(vm.controlsPressed).forEach((k) => {
-          if (vm.controlsPressed[k].key === e.key) {
+          if (vm.controlsPressed[k].key === e.code) {
             vm.controlsPressed[k].pressed = true;
           }
         });
@@ -128,12 +128,12 @@ class GameArea {
     });
     window.addEventListener("keyup", function (e) {
       Object.keys(vm.controlsHold).forEach((k) => {
-        if (vm.controlsHold[k].key === e.key) {
+        if (vm.controlsHold[k].key === e.code) {
           vm.controlsHold[k].pressed = false;
         }
       });
       Object.keys(vm.controlsPressed).forEach((k) => {
-        if (vm.controlsPressed[k].key === e.key) {
+        if (vm.controlsPressed[k].key === e.code) {
           vm.controlsPressed[k].pressed = false;
           vm.controlsPressed[k].action = false;
         }
