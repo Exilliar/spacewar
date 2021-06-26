@@ -10,7 +10,9 @@ body {
   align-items: center;
 }
 .row {
+  width: 100%;
   display: flex;
+  justify-content: space-between;
 }
 .column {
   display: flex;
@@ -43,15 +45,6 @@ p {
   flex-direction: column;
   align-items: center;
 }
-/* #restart-button-container {
-  margin-top: 1rem;
-  margin-bottom: 1rem;
-  height: 2.5rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 100%;
-} */
 .restart-button {
   color: white;
   background-color: black;
