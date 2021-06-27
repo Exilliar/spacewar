@@ -3,7 +3,7 @@ const gameArea = new GameArea();
 function startGame() {
   gameArea.start();
   genForms();
-  genControls();
+  genPlayerInfo();
 }
 
 function toggleGrav() {
@@ -48,50 +48,9 @@ function genForms() {
   });
 }
 
-function formComponent(form) {
-  let html = `
-        <h3>${form.title}</h3>
-        <form
-          id="${form.id}"
-          class="center"
-          onsubmit="${form.onSubmitName}(); return false"
-        >
-          <div class="grid form-grid">
-    `;
-  form.inputs.forEach((input) => {
-    html += `
-          <label for="${input.id}">${input.title}</label>
-          <input type="${input.type}" id="${input.id}" ${
-      input.type === "number" ? "step='0.01'" : ""
-    } value="${input.defaultValue}">
-      `;
+function genPlayerInfo() {
+  const playerInfo = document.getElementById("player-info");
+  gameArea.players.forEach((player) => {
+    playerInfo.innerHTML += playerInfoComponent(player.player);
   });
-  html += `</div><button type="submit">Submit</button></form>`;
-
-  return html;
-}
-
-function genControls() {
-  const controls = document.getElementById("controls");
-  console.log("gameArea:", gameArea)
-  gameArea.players.forEach(player => {
-    controls.innerHTML += controlsComponent(player.player);
-  });
-}
-
-function controlsComponent(player) {
-  const pControls = player.controls;
-  let html = `
-    <div class="column">
-      <h3>Player ${player.id + 1}</h3>
-      <div class="grid">
-        <p>Movement:</p>
-        <p>${pControls.up === "ArrowUp" ? "arrow keys" : pControls.up + pControls.left + pControls.down + pControls.right}</p>
-        <p>Shoot:</p>
-        <p>${pControls.shoot}</p>
-      </div>
-    </div>
-  `;
-
-  return html;
 }

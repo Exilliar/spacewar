@@ -5,7 +5,14 @@
 
     <link rel="stylesheet" href="style.css" />
 
+    <!-- data -->
     <script type="text/javascript" src="data/controls.js"></script>
+
+    <!-- components -->
+    <script type="text/javascript" src="components/playerInfo.js"></script>
+    <script type="text/javascript" src="components/form.js"></script>
+
+    <!-- classes -->
     <script type="text/javascript" src="classes/Player.js"></script>
     <script type="text/javascript" src="classes/Missile.js"></script>
     <script type="text/javascript" src="classes/Sun.js"></script>
@@ -17,18 +24,8 @@
     <div role="main" class="main">
       <h1>SpaceWar v1.0</h1>
       <div id="game">
-        <div class="row" id="controls"></div>
-        <div class="score">
-          <div class="column score-column">
-            <p>Player 1 score</p>
-            <p id="player0-score">0</p>
-          </div>
-          <div id="restart-button-container"></div>
-          <div class="column score-column">
-            <p>Player 2 score</p>
-            <p id="player1-score">0</p>
-          </div>
-        </div>
+        <div class="row" id="player-info"></div>
+        <div id="restart-button-container"></div>
       </div>
       <h2>Settings</h2>
       <button id="gravButton" onclick="toggleGrav()">Turn gravity off</button>
